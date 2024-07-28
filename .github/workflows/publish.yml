@@ -1,7 +1,5 @@
-# This workflow will publish your package to NPM when you push to the master branch(if branch main to write main)
 name: Publish to NPM
 on:
-    # все запускает, когда пушим в мастер
   push:
     branches:
       - master
@@ -10,24 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20] # запуск на 20 версии ноды
+        node-version: [20]
     steps:
-      - uses: actions/checkout@v3 # переход на ветку
-      - uses: pnpm/action-setup@v2 # install pnpm
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - name: Use Node.js ${{ matrix.node-version }} # install node
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Install dependencies # install dependencies
+      - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Build lib
-        run: pnpm run build # build our project
+        run: pnpm run build
       - name: Build lib
         run: pnpm run build
       - uses: JS-DevTools/npm-publish@v3
         with:
-          token: ${{ secrets.NMP_PUBLISH_TOKEN }} #it is token from github(sectrest and varibles)of project(назвиние токена должно совпадать с тем,что создали на гитхабе)
+          token: ${{ secrets.NPM_PUBLISH_TOKEN }}
           access: 'public'
